@@ -36,6 +36,8 @@ export const careSlotApi = createApi({
       providesTags: ["Availability"],
     }),
 
+
+
     bookAppointment: builder.mutation({
       query: (body) => ({ url: "/appointments", method: "POST", body }),
       invalidatesTags: ["Appointment"],
@@ -52,6 +54,8 @@ export const careSlotApi = createApi({
       invalidatesTags: ["Appointment"],
     }),
 
+
+
     getMyCarePlans: builder.query({
       query: () => "/care-plans/my-plans",
       providesTags: ["CarePlan"],
@@ -62,6 +66,53 @@ export const careSlotApi = createApi({
         method: "PATCH",
       }),
       invalidatesTags: ["CarePlan"],
+    }),
+
+    getMyProfile: builder.query({
+      
+      query: () => {
+        console.log("Fetching profile...");
+        return "/patients/my-profile";
+      },
+      providesTags: ["Patient"],
+    }),
+
+
+
+    getMySchedule: builder.query({ 
+      query: ({ date }) => {
+        console.log("Fetching profile...");
+        return `/appointments/my-schedule?date=${date}`;
+      },
+      providesTags: ["Appointment"] 
+    }),
+    completeAppointment: builder.mutation({ 
+      query: (id) => ({ url: `/appointments/${id}/complete`, method: "PATCH" }), 
+      invalidatesTags: ["Appointment"] 
+    }),
+    createCarePlan: builder.mutation({ 
+      query: (body) => ({ url: "/care-plans", method: "POST" }), 
+      invalidatesTags: ["CarePlan"] 
+    }),
+    getMyWeeklyAvailability: builder.query({
+      query: () => `/clinicians/weekly-availability/me`,
+      providesTags: ["Availability"],
+    }),
+    updateAvailability: builder.mutation({ 
+      query: (body) => ({ url: "/scheduling/availability", method: "PUT", body }), 
+      invalidatesTags: ["Availability"] 
+    }),
+    setAvailability: builder.mutation({ 
+      query: (body) => ({ url: "/scheduling/availability", method: "POST", body }), 
+      invalidatesTags: ["Availability"] 
+    }),
+    deleteAvailability: builder.mutation({ 
+      query: (dayOfWeek) => ({ url: `/scheduling/availability/${dayOfWeek}`, method: "DELETE" }), 
+      invalidatesTags: ["Availability"] 
+    }),
+    getMyPatients: builder.query({ 
+      query: () => "/clinicians/my-patients", 
+      providesTags: ["Patient"] 
     }),
   }),
 });
@@ -77,4 +128,13 @@ export const {
   useCancelAppointmentMutation,
   useGetMyCarePlansQuery,
   useUpdateTaskStatusMutation,
+  useGetMyProfileQuery,
+  useGetMyScheduleQuery,
+  useCompleteAppointmentMutation,
+  useCreateCarePlanMutation,
+  useUpdateAvailabilityMutation,
+  useSetAvailabilityMutation,
+  useDeleteAvailabilityMutation,
+  useGetMyPatientsQuery,
+  useGetMyWeeklyAvailabilityQuery,
 } = careSlotApi;

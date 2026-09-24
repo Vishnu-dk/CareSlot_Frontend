@@ -9,6 +9,9 @@ import PatientDashboard from "./pages/patient/DashboardPage";
 import BookVisitPage from "./pages/patient/BookVisitPage";
 import AppointmentsPage from "./pages/patient/AppointmentsPage";
 import CarePlansPage from "./pages/patient/CarePlanPage";
+import ClinicianDashboard from "./pages/clinician/DashboardPage";
+import AvailabilityPage from "./pages/clinician/AvailabiltyPage";
+import PatientsPage from "./pages/clinician/PatientsPage";
 
 
 export default function App() {
@@ -35,9 +38,9 @@ export default function App() {
       {/* CLINICIAN portal */}
       <Route element={<ProtectedRoute allowedRoles={["CLINICIAN"]} />}>
         <Route path="/clinician" element={<AppLayout />}>
-          <Route index element={<Placeholder name="Today's Schedule" />} />
-          <Route path="availability" element={<Placeholder name="Manage Availability" />} />
-          <Route path="patients" element={<Placeholder name="My Patients" />} />
+    <Route index element={<ClinicianDashboard />} />
+    <Route path="availability" element={<AvailabilityPage />} />
+    <Route path="patients" element={<PatientsPage />} />
           <Route path="care-plans" element={<Placeholder name="Care Plans Issued" />} />
         </Route>
       </Route>

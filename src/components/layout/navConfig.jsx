@@ -22,7 +22,6 @@ export const NAV_ITEMS = {
     { label: "Today's Schedule", path: "/clinician",              icon: CalendarDays, end: true },
     { label: "Availability",     path: "/clinician/availability", icon: Clock },
     { label: "My Patients",      path: "/clinician/patients",     icon: Users },
-    { label: "Care Plans",       path: "/clinician/care-plans",   icon: ClipboardList },
     { label: "Logout",           path: "/login",                icon: LogOut,        isLogout: true },
   ],
   ADMIN: [

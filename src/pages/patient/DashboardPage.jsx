@@ -1,26 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../features/auth/authSlice";
+import { selectCurrentToken, selectCurrentUser } from "../../features/auth/authSlice";
 import {
   useGetMyAppointmentsQuery, 
   useGetMyCarePlansQuery, 
   useCancelAppointmentMutation,
+  useGetMyProfileQuery,
 } from "../../features/api/careSlotApi";
 import ProgressRing from "../../components/common/ProgressRing";
 import StatusBadge from "../../components/common/StatusBadge";
 import Toast, { useToastMsg } from "../../components/common/Toast";
 import { fmtDate, fmtTime } from "../../utils/dates";
 
-import { Box, Button, Flex, Grid, Heading, HStack, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Heading, HStack, Spinner, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 
 export default function DashboardPage() {
   const user = useSelector(selectCurrentUser);
+    const token = useSelector(selectCurrentToken);
+
   const navigate = useNavigate();
-  
+const { data: profile, isLoading ,error} = useGetMyProfileQuery();
   const { data: appointments = [] } = useGetMyAppointmentsQuery();
   const { data: carePlans = [] } = useGetMyCarePlansQuery();
+
   const [cancelAppointment] = useCancelAppointmentMutation();
   const { message, show } = useToastMsg();
+
+
+const patientData = profile || {}; 
+
+console.log("Status check:", { isLoading, error, data: profile, patientData });
 
   const upcoming = appointments.filter((a) => a.status === "BOOKED");
   const completed = appointments.filter((a) => a.status === "COMPLETED");
@@ -29,7 +38,6 @@ export default function DashboardPage() {
   const progress = activePlan ? Math.round(Number(activePlan.progressPercentage)) : 0;
   const doneTasks = activePlan ? activePlan.tasks.filter((t) => t.status === "COMPLETED").length : 0;
   const cliniciansSeen = new Set(appointments.map((a) => a.clinicianId)).size;
-  const name = (user?.email || "there").split("@")[0];
 
   const ringSize = useBreakpointValue({ base: 90, md: 120, lg: 160 });
 
@@ -42,6 +50,9 @@ export default function DashboardPage() {
     }
   };
 
+
+
+
   return (
     <Box  mx="auto" py={4}>
       
@@ -50,7 +61,7 @@ export default function DashboardPage() {
           Good morning
         </Text>
         <Heading fontSize={{base: "24px", md: "30px"}} fontWeight={800} color="espresso" letterSpacing="-0.5px">
-          {name} 👋
+          {patientData?.firstName || "Guest"} 👋
         </Heading>
         <Text fontSize={{base: "12px", md: "14px"}} color="#5D4037">
           Here's what's happening with your health today.
@@ -59,7 +70,6 @@ export default function DashboardPage() {
 
       <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4} mb={4}>
         
-        {/* Upcoming Appointment Card */}
         <Box bg="beige" borderRadius="20px" p={6} boxShadow="0 2px 12px rgba(62, 39, 35, 0.06)">
           <Flex justify="space-between" align="flex-start" mb={{md:4,base:1}}>
             <Text fontSize={{base: "10px", md: "11.5px"}} fontWeight={600} color="#5D4037" textTransform="uppercase" letterSpacing="0.08em">

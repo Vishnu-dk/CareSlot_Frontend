@@ -49,8 +49,8 @@ export default function MobileDock() {
 
         if (isLogout) {
           return (
-            <Box>
-                                <Box w="1px" bg="taupe" mx={.2} my={1.5} />
+            <Box key={path} display="flex" alignItems="center">
+                                <Box w="1px" bg="taupe" align="center" justify="center" mx={.2} my={1.5} />
             
             <button key={path} onClick={handleLogout} style={{ background: 'none', border: 'none', padding: 0 }}>
               {renderIcon(false)}
