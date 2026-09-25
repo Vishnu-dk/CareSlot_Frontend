@@ -28,15 +28,15 @@ export const careSlotApi = createApi({
     }),
 
     getWeeklyAvailability: builder.query({
-      query: (clinicianId) => `/scheduling/clinicians/${clinicianId}/weekly-availability`,
+      query: (clinicianId) =>
+        `/scheduling/clinicians/${clinicianId}/weekly-availability`,
       providesTags: ["Availability"],
     }),
     getAvailableSlots: builder.query({
-      query: ({ clinicianId, date }) => `/scheduling/clinicians/${clinicianId}/slots?date=${date}`,
+      query: ({ clinicianId, date }) =>
+        `/scheduling/clinicians/${clinicianId}/slots?date=${date}`,
       providesTags: ["Availability"],
     }),
-
-
 
     bookAppointment: builder.mutation({
       query: (body) => ({ url: "/appointments", method: "POST", body }),
@@ -54,8 +54,6 @@ export const careSlotApi = createApi({
       invalidatesTags: ["Appointment"],
     }),
 
-
-
     getMyCarePlans: builder.query({
       query: () => "/care-plan/my-plans",
       providesTags: ["CarePlan"],
@@ -69,63 +67,71 @@ export const careSlotApi = createApi({
     }),
 
     getMyProfile: builder.query({
-      
       query: () => {
         return "/patients/my-profile";
       },
       providesTags: ["Patient"],
     }),
     getMyPatientsPlans: builder.query({
-  query: () => "/care-plan/my-issued-plans",
-  providesTags: ["CarePlan"],
-}),
+      query: () => "/care-plan/my-issued-plans",
+      providesTags: ["CarePlan"],
+    }),
 
-
-
-    getMySchedule: builder.query({ 
+    getMySchedule: builder.query({
       query: ({ date }) => {
         return `/appointments/my-schedule?date=${date}`;
       },
-      providesTags: ["Appointment"] 
+      providesTags: ["Appointment"],
     }),
-    completeAppointment: builder.mutation({ 
-      query: (id) => ({ url: `/appointments/${id}/complete`, method: "PATCH" }), 
-      invalidatesTags: ["Appointment"] 
+    completeAppointment: builder.mutation({
+      query: (id) => ({ url: `/appointments/${id}/complete`, method: "PATCH" }),
+      invalidatesTags: ["Appointment"],
     }),
-createCarePlan: builder.mutation({
-  query: (payload) => ({
-    url: "/care-plan",
-    method: "POST",
-    headers: { 
-      "Content-Type": "application/json"
-    },
-    body: payload, 
-  }),
-  invalidatesTags: ["CarePlan"],
-}),
+    createCarePlan: builder.mutation({
+      query: (payload) => ({
+        url: "/care-plan",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: payload,
+      }),
+      invalidatesTags: ["CarePlan"],
+    }),
     getMyWeeklyAvailability: builder.query({
       query: () => `/clinicians/weekly-availability/me`,
       providesTags: ["Availability"],
     }),
-    updateAvailability: builder.mutation({ 
-      query: (body) => ({ url: "/scheduling/availability", method: "PUT", body }), 
-      invalidatesTags: ["Availability"] 
+    updateAvailability: builder.mutation({
+      query: (body) => ({
+        url: "/scheduling/availability",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Availability"],
     }),
-    setAvailability: builder.mutation({ 
-      query: (body) => ({ url: "/scheduling/availability", method: "POST", body }), 
-      invalidatesTags: ["Availability"] 
+    setAvailability: builder.mutation({
+      query: (body) => ({
+        url: "/scheduling/availability",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Availability"],
     }),
-    deleteAvailability: builder.mutation({ 
-      query: (dayOfWeek) => ({ url: `/scheduling/availability/${dayOfWeek}`, method: "DELETE" }), 
-      invalidatesTags: ["Availability"] 
+    deleteAvailability: builder.mutation({
+      query: (dayOfWeek) => ({
+        url: `/scheduling/availability/${dayOfWeek}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Availability"],
     }),
-    getMyPatients: builder.query({ 
-      query: () => "/clinicians/my-patients", 
-      providesTags: ["Patient"] 
+    getMyPatients: builder.query({
+      query: () => "/clinicians/my-patients",
+      providesTags: ["Patient"],
     }),
 
     getAllClinicians: builder.query({
-      query: () => "/clinicians", 
+      query: () => "/clinicians",
       providesTags: ["Clinician"],
     }),
     getAllPatients: builder.query({
@@ -137,12 +143,18 @@ createCarePlan: builder.mutation({
       providesTags: ["Appointment"],
     }),
     deactivateUser: builder.mutation({
-      query: (userId) => ({ url: `/admin/users/${userId}/deactivate`, method: "PATCH" }),
+      query: (userId) => ({
+        url: `/admin/users/${userId}/deactivate`,
+        method: "PATCH",
+      }),
       invalidatesTags: ["Clinician", "Patient"],
     }),
     activateUser: builder.mutation({
-      query: (userId) => ({ url: `/admin/users/${userId}/activate`, method: "PATCH" }),
-      invalidatesTags: ["Clinician", "Patient","Appointment"],
+      query: (userId) => ({
+        url: `/admin/users/${userId}/activate`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Clinician", "Patient", "Appointment"],
     }),
   }),
 });

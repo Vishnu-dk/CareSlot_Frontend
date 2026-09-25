@@ -16,19 +16,18 @@ import AdminDashboard from "./pages/admin/DashboardPage";
 import UsersPage from "./pages/admin/UserPage";
 import CarePlansListPage from "./pages/patient/CarePlansListPage";
 
-
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Auth pages — logged-in users get bounced out */}
+      {}
       <Route element={<PublicOnlyRoute />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Route>
 
-      {/* PATIENT portal */}
+      {}
       <Route element={<ProtectedRoute allowedRoles={["PATIENT"]} />}>
         <Route path="/patient" element={<AppLayout />}>
           <Route path="/patient" element={<PatientDashboard />} />
@@ -38,16 +37,16 @@ export default function App() {
         </Route>
       </Route>
 
-      {/* CLINICIAN portal */}
+      {}
       <Route element={<ProtectedRoute allowedRoles={["CLINICIAN"]} />}>
         <Route path="/clinician" element={<AppLayout />}>
-    <Route index element={<ClinicianDashboard />} />
-    <Route path="availability" element={<AvailabilityPage />} />
-    <Route path="patients" element={<PatientsPage />} />
+          <Route index element={<ClinicianDashboard />} />
+          <Route path="availability" element={<AvailabilityPage />} />
+          <Route path="patients" element={<PatientsPage />} />
         </Route>
       </Route>
 
-      {/* ADMIN portal */}
+      {}
       <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/admin" element={<AppLayout />}>
           <Route index element={<AdminDashboard />} />

@@ -1,7 +1,24 @@
 import { useState, useMemo } from "react";
 import {
-  Box, Button, Flex, Heading, Input, Menu, MenuButton, MenuItem, MenuList,
-  Table, Tbody, Td, Th, Thead, Tr, Text, VStack, Spinner, Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Text,
+  VStack,
+  Spinner,
+  Badge,
 } from "@chakra-ui/react";
 import { MoreVertical, Search, UserPlus, UserMinus } from "lucide-react";
 import {
@@ -11,7 +28,7 @@ import {
   useActivateUserMutation,
 } from "../../features/api/careSlotApi";
 import Toast, { useToastMsg } from "../../components/common/Toast";
-import StatusChangeDialog from "../../components/admin/StatusChangeDialog"; 
+import StatusChangeDialog from "../../components/admin/StatusChangeDialog";
 
 const CARD_SHADOW = "0 2px 12px rgba(62, 39, 35, 0.06)";
 
@@ -24,44 +41,53 @@ export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [actionType, setActionType] = useState("DEACTIVATE");
 
-  const { data: clinicians = [], isLoading: loadingClinicians,refetch:refetchClinicians } = useGetAllCliniciansQuery();
-  const { data: patients = [], isLoading: loadingPatients,refetch:refetchPatients } = useGetAllPatientsQuery();
-  
-  const [deactivateUser, { isLoading: deactivating }] = useDeactivateUserMutation();
+  const {
+    data: clinicians = [],
+    isLoading: loadingClinicians,
+    refetch: refetchClinicians,
+  } = useGetAllCliniciansQuery();
+  const {
+    data: patients = [],
+    isLoading: loadingPatients,
+    refetch: refetchPatients,
+  } = useGetAllPatientsQuery();
+
+  const [deactivateUser, { isLoading: deactivating }] =
+    useDeactivateUserMutation();
   const [activateUser, { isLoading: activating }] = useActivateUserMutation();
 
   const isLoading = loadingClinicians || loadingPatients;
   const isProcessing = deactivating || activating;
 
   const allUsers = useMemo(() => {
-    const cList = clinicians.map(c => ({
-      id: c.userId, 
+    const cList = clinicians.map((c) => ({
+      id: c.userId,
       name: `Dr. ${c.firstName} ${c.lastName}`,
-      email: c.email || "N/A", 
+      email: c.email || "N/A",
       specialty: c.specialty,
       role: "CLINICIAN",
-      status: c.deletedAt ? "Inactive" : "Active", 
+      status: c.deletedAt ? "Inactive" : "Active",
       raw: c,
     }));
 
-    const pList = patients.map(p => ({
+    const pList = patients.map((p) => ({
       id: p.userId,
       name: `${p.firstName} ${p.lastName}`,
       email: p.email || "N/A",
       specialty: "Patient",
       role: "PATIENT",
-      status: p.deletedAt ? "Inactive" : "Active", 
+      status: p.deletedAt ? "Inactive" : "Active",
       raw: p,
     }));
 
     return [...cList, ...pList];
   }, [clinicians, patients]);
 
-  const filteredUsers = allUsers.filter(u => {
+  const filteredUsers = allUsers.filter((u) => {
     const matchesRole = roleFilter === "All" || u.role === roleFilter;
     const term = search.toLowerCase();
-    const matchesSearch = 
-      u.name.toLowerCase().includes(term) || 
+    const matchesSearch =
+      u.name.toLowerCase().includes(term) ||
       u.email.toLowerCase().includes(term);
     return matchesRole && matchesSearch;
   });
@@ -74,7 +100,7 @@ export default function UsersPage() {
 
   const handleConfirmAction = async () => {
     if (!selectedUser) return;
-    
+
     try {
       if (actionType === "DEACTIVATE") {
         await deactivateUser(selectedUser.id).unwrap();
@@ -83,11 +109,8 @@ export default function UsersPage() {
         await activateUser(selectedUser.id).unwrap();
         show(`${selectedUser.role} activated successfully`);
       }
-            await Promise.all([
-        refetchClinicians(),
-        refetchPatients()
-      ]);
-      
+      await Promise.all([refetchClinicians(), refetchPatients()]);
+
       setDialogOpen(false);
       setSelectedUser(null);
     } catch (e) {
@@ -99,7 +122,9 @@ export default function UsersPage() {
   const getInitials = (name) => {
     if (!name) return "?";
     const parts = name.replace("Dr. ", "").split(" ");
-    return parts.length >= 2 ? `${parts[0][0]}${parts[1][0]}`.toUpperCase() : parts[0].slice(0, 2).toUpperCase();
+    return parts.length >= 2
+      ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+      : parts[0].slice(0, 2).toUpperCase();
   };
 
   const getStatusBadge = (status) => {
@@ -110,18 +135,33 @@ export default function UsersPage() {
   };
 
   return (
-    <Box  mx="auto" py={4}>
-      
+    <Box mx="auto" py={4}>
       <VStack align="start" spacing={1} mb={6}>
-        <Text fontSize={{base: "8px", md: "12px"}} fontWeight={600} color="#5D4037" textTransform="uppercase" letterSpacing="0.08em">
+        <Text
+          fontSize={{ base: "8px", md: "12px" }}
+          fontWeight={600}
+          color="#5D4037"
+          textTransform="uppercase"
+          letterSpacing="0.08em"
+        >
           Manage
         </Text>
-        <Heading fontSize={{base: "24px", md: "30px"}} fontWeight={800} color="espresso" letterSpacing="-0.5px">
+        <Heading
+          fontSize={{ base: "24px", md: "30px" }}
+          fontWeight={800}
+          color="espresso"
+          letterSpacing="-0.5px"
+        >
           User Directory
         </Heading>
       </VStack>
 
-      <Flex gap={4} mb={5} direction={{ base: "column", md: "row" }} align={{ base: "stretch", md: "center" }}>
+      <Flex
+        gap={4}
+        mb={5}
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "stretch", md: "center" }}
+      >
         <Box position="relative" flex={1} maxW="400px">
           <Input
             placeholder="Search by name or email..."
@@ -133,11 +173,20 @@ export default function UsersPage() {
             borderRadius="12px"
             _focus={{ borderColor: "brand.500" }}
           />
-          <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#5D4037" }} />
+          <Search
+            size={16}
+            style={{
+              position: "absolute",
+              left: "12px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "#5D4037",
+            }}
+          />
         </Box>
 
         <Flex gap={1} bg="beige" p={1} borderRadius="12px">
-          {["All", "PATIENT", "CLINICIAN"].map(f => (
+          {["All", "PATIENT", "CLINICIAN"].map((f) => (
             <Button
               key={f}
               onClick={() => setRoleFilter(f)}
@@ -149,7 +198,9 @@ export default function UsersPage() {
               color={roleFilter === f ? "white" : "#5D4037"}
               fontWeight={600}
               fontSize="12.5px"
-              _hover={{ bg: roleFilter === f ? "brand.600" : "rgba(160,120,85,0.1)" }}
+              _hover={{
+                bg: roleFilter === f ? "brand.600" : "rgba(160,120,85,0.1)",
+              }}
             >
               {f === "All" ? "All" : f.charAt(0) + f.slice(1).toLowerCase()}
             </Button>
@@ -157,15 +208,30 @@ export default function UsersPage() {
         </Flex>
       </Flex>
 
-      <Box bg="beige" borderRadius="20px" p={0} boxShadow={CARD_SHADOW} overflow="hidden">
+      <Box
+        bg="beige"
+        borderRadius="20px"
+        p={0}
+        boxShadow={CARD_SHADOW}
+        overflow="hidden"
+      >
         {isLoading ? (
-          <Flex justify="center" py={16}><Spinner color="brand.500" /></Flex>
+          <Flex justify="center" py={16}>
+            <Spinner color="brand.500" />
+          </Flex>
         ) : (
           <Box overflowX="auto">
             <Table variant="simple" size="md">
               <Thead>
                 <Tr>
-                  {["User", "Contact Info", "Specialty", "Role", "Status", ""].map(col => (
+                  {[
+                    "User",
+                    "Contact Info",
+                    "Specialty",
+                    "Role",
+                    "Status",
+                    "",
+                  ].map((col) => (
                     <Th
                       key={col}
                       textAlign="left"
@@ -194,20 +260,43 @@ export default function UsersPage() {
                   filteredUsers.map((u, i) => {
                     const statusStyle = getStatusBadge(u.status);
                     const isActive = u.status === "Active";
-                    
+
                     return (
-                      <Tr key={u.id} borderColor={i < filteredUsers.length - 1 ? "rgba(215,204,200,0.45)" : "transparent"}>
+                      <Tr
+                        key={u.id}
+                        borderColor={
+                          i < filteredUsers.length - 1
+                            ? "rgba(215,204,200,0.45)"
+                            : "transparent"
+                        }
+                      >
                         <Td py={4} px={5}>
                           <Flex align="center" gap={3}>
                             <Flex
-                              w="34px" h="34px" borderRadius="full" 
-                              bg={isActive ? (u.role === "CLINICIAN" ? "#1d4ed8" : "brand.500") : "#D7CCC8"}
-                              align="center" justify="center" color="white"
-                              fontSize="11px" fontWeight={700} flexShrink={0}
+                              w="34px"
+                              h="34px"
+                              borderRadius="full"
+                              bg={
+                                isActive
+                                  ? u.role === "CLINICIAN"
+                                    ? "#1d4ed8"
+                                    : "brand.500"
+                                  : "#D7CCC8"
+                              }
+                              align="center"
+                              justify="center"
+                              color="white"
+                              fontSize="11px"
+                              fontWeight={700}
+                              flexShrink={0}
                             >
                               {getInitials(u.name)}
                             </Flex>
-                            <Text fontWeight={600} fontSize="14px" color={isActive ? "espresso" : "#9ca3af"}>
+                            <Text
+                              fontWeight={600}
+                              fontSize="14px"
+                              color={isActive ? "espresso" : "#9ca3af"}
+                            >
                               {u.name}
                             </Text>
                           </Flex>
@@ -216,23 +305,31 @@ export default function UsersPage() {
                           {u.email}
                         </Td>
                         <Td py={4} px={5} fontSize="13px" color="#5D4037">
-                          {u.role==="CLINICIAN" ? u.specialty : "Patient"}
+                          {u.role === "CLINICIAN" ? u.specialty : "Patient"}
                         </Td>
                         <Td py={4} px={5}>
                           <Badge
-                            px={3} py={1}
+                            px={3}
+                            py={1}
                             borderRadius="full"
                             fontSize="11.5px"
                             fontWeight={600}
-                            bg={u.role === "CLINICIAN" ? "rgba(59,130,246,0.1)" : "rgba(160,120,85,0.1)"}
-                            color={u.role === "CLINICIAN" ? "#1d4ed8" : "#A07855"}
+                            bg={
+                              u.role === "CLINICIAN"
+                                ? "rgba(59,130,246,0.1)"
+                                : "rgba(160,120,85,0.1)"
+                            }
+                            color={
+                              u.role === "CLINICIAN" ? "#1d4ed8" : "#A07855"
+                            }
                           >
                             {u.role}
                           </Badge>
                         </Td>
                         <Td py={4} px={5}>
                           <Badge
-                            px={3} py={1}
+                            px={3}
+                            py={1}
                             borderRadius="full"
                             fontSize="11.5px"
                             fontWeight={600}
@@ -244,22 +341,50 @@ export default function UsersPage() {
                         </Td>
                         <Td py={4} px={5}>
                           <Menu>
-                            <MenuButton as={Button} variant="ghost" size="sm" p={2} minW="auto">
+                            <MenuButton
+                              as={Button}
+                              variant="ghost"
+                              size="sm"
+                              p={2}
+                              minW="auto"
+                            >
                               <MoreVertical size={18} color="#5D4037" />
                             </MenuButton>
-                            <MenuList bg="white" borderColor="taupe" shadow="lg" borderRadius="12px" overflow="hidden">
-                              <MenuItem fontSize="13px" color="espresso" _hover={{ bg: "beige" }}>View Profile</MenuItem>
-                              
-                              {/* Dynamic Toggle Item */}
-                              <MenuItem 
-                                fontSize="13px" 
-                                color={isActive ? "#dc2626" : "#15803d"} 
-                                _hover={{ bg: isActive ? "red.50" : "green.50" }}
+                            <MenuList
+                              bg="white"
+                              borderColor="taupe"
+                              shadow="lg"
+                              borderRadius="12px"
+                              overflow="hidden"
+                            >
+                              <MenuItem
+                                fontSize="13px"
+                                color="espresso"
+                                _hover={{ bg: "beige" }}
+                              >
+                                View Profile
+                              </MenuItem>
+
+                              {}
+                              <MenuItem
+                                fontSize="13px"
+                                color={isActive ? "#dc2626" : "#15803d"}
+                                _hover={{
+                                  bg: isActive ? "red.50" : "green.50",
+                                }}
                                 onClick={() => handleToggleStatus(u)}
                                 isDisabled={isProcessing}
-                                icon={isActive ? <UserMinus size={14} /> : <UserPlus size={14} />}
+                                icon={
+                                  isActive ? (
+                                    <UserMinus size={14} />
+                                  ) : (
+                                    <UserPlus size={14} />
+                                  )
+                                }
                               >
-                                {isActive ? "Deactivate Account" : "Reactivate Account"}
+                                {isActive
+                                  ? "Deactivate Account"
+                                  : "Reactivate Account"}
                               </MenuItem>
                             </MenuList>
                           </Menu>

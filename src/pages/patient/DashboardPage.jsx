@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentToken, selectCurrentUser } from "../../features/auth/authSlice";
 import {
-  useGetMyAppointmentsQuery, 
-  useGetMyCarePlansQuery, 
+  selectCurrentToken,
+  selectCurrentUser,
+} from "../../features/auth/authSlice";
+import {
+  useGetMyAppointmentsQuery,
+  useGetMyCarePlansQuery,
   useCancelAppointmentMutation,
   useGetMyProfileQuery,
 } from "../../features/api/careSlotApi";
@@ -12,30 +15,43 @@ import StatusBadge from "../../components/common/StatusBadge";
 import Toast, { useToastMsg } from "../../components/common/Toast";
 import { fmtDate, fmtTime } from "../../utils/dates";
 
-import { Box, Button, Flex, Grid, Heading, HStack, Spinner, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Spinner,
+  Text,
+  useBreakpointValue,
+  VStack,
+} from "@chakra-ui/react";
 
 export default function DashboardPage() {
   const user = useSelector(selectCurrentUser);
-    const token = useSelector(selectCurrentToken);
+  const token = useSelector(selectCurrentToken);
 
   const navigate = useNavigate();
-const { data: profile, isLoading ,error} = useGetMyProfileQuery();
+  const { data: profile, isLoading, error } = useGetMyProfileQuery();
   const { data: appointments = [] } = useGetMyAppointmentsQuery();
   const { data: carePlans = [] } = useGetMyCarePlansQuery();
 
   const [cancelAppointment] = useCancelAppointmentMutation();
   const { message, show } = useToastMsg();
 
-
-const patientData = profile || {}; 
-
+  const patientData = profile || {};
 
   const upcoming = appointments.filter((a) => a.status === "BOOKED");
   const completed = appointments.filter((a) => a.status === "COMPLETED");
   const next = upcoming[0];
   const activePlan = carePlans.find((p) => p.status === "ACTIVE");
-  const progress = activePlan ? Math.round(Number(activePlan.progressPercentage)) : 0;
-  const doneTasks = activePlan ? activePlan.tasks.filter((t) => t.status === "COMPLETED").length : 0;
+  const progress = activePlan
+    ? Math.round(Number(activePlan.progressPercentage))
+    : 0;
+  const doneTasks = activePlan
+    ? activePlan.tasks.filter((t) => t.status === "COMPLETED").length
+    : 0;
   const cliniciansSeen = new Set(appointments.map((a) => a.clinicianId)).size;
 
   const ringSize = useBreakpointValue({ base: 90, md: 120, lg: 160 });
@@ -49,29 +65,54 @@ const patientData = profile || {};
     }
   };
 
-
-
-
   return (
-    <Box  mx="auto" py={4}>
-      
+    <Box mx="auto" py={4}>
       <VStack align="start" spacing={1} mb={7}>
-        <Text fontSize={{base: "8px", md: "12px"}} fontWeight={600} color="#5D4037" textTransform="uppercase" letterSpacing="0.08em">
+        <Text
+          fontSize={{ base: "8px", md: "12px" }}
+          fontWeight={600}
+          color="#5D4037"
+          textTransform="uppercase"
+          letterSpacing="0.08em"
+        >
           Good morning
         </Text>
-        <Heading fontSize={{base: "24px", md: "30px"}} fontWeight={800} color="espresso" letterSpacing="-0.5px">
+        <Heading
+          fontSize={{ base: "24px", md: "30px" }}
+          fontWeight={800}
+          color="espresso"
+          letterSpacing="-0.5px"
+        >
           {patientData?.firstName || "Guest"} 👋
         </Heading>
-        <Text fontSize={{base: "12px", md: "14px"}} color="#5D4037">
+        <Text fontSize={{ base: "12px", md: "14px" }} color="#5D4037">
           Here's what's happening with your health today.
         </Text>
       </VStack>
 
-      <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4} mb={4}>
-        
-        <Box bg="beige" borderRadius="20px" p={6} boxShadow="0 2px 12px rgba(62, 39, 35, 0.06)">
-          <Flex justify="space-between" align="flex-start" mb={{md:4,base:1}}>
-            <Text fontSize={{base: "10px", md: "11.5px"}} fontWeight={600} color="#5D4037" textTransform="uppercase" letterSpacing="0.08em">
+      <Grid
+        templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+        gap={4}
+        mb={4}
+      >
+        <Box
+          bg="beige"
+          borderRadius="20px"
+          p={6}
+          boxShadow="0 2px 12px rgba(62, 39, 35, 0.06)"
+        >
+          <Flex
+            justify="space-between"
+            align="flex-start"
+            mb={{ md: 4, base: 1 }}
+          >
+            <Text
+              fontSize={{ base: "10px", md: "11.5px" }}
+              fontWeight={600}
+              color="#5D4037"
+              textTransform="uppercase"
+              letterSpacing="0.08em"
+            >
               Upcoming Appointment
             </Text>
             {next && <StatusBadge status={next.status} />}
@@ -79,20 +120,29 @@ const patientData = profile || {};
 
           {next ? (
             <>
-              <Text fontSize={{base: "13px", md: "18px"}} fontWeight={700} color="espresso" mb={1}>
+              <Text
+                fontSize={{ base: "13px", md: "18px" }}
+                fontWeight={700}
+                color="espresso"
+                mb={1}
+              >
                 {next.reason || "General consultation"}
               </Text>
-              <Text fontSize={{base: "10px", md: "14px"}} color="#5D4037">
+              <Text fontSize={{ base: "10px", md: "14px" }} color="#5D4037">
                 {next.clinicianName}
               </Text>
-              <Text fontSize={{base: "10px", md: "13px"}} color="#5D4037" mb={{md:4,base:1}}>
-                {fmtDate(next.startsAt.slice(0, 10))} · {fmtTime(next.startsAt.slice(11, 16))}
+              <Text
+                fontSize={{ base: "10px", md: "13px" }}
+                color="#5D4037"
+                mb={{ md: 4, base: 1 }}
+              >
+                {fmtDate(next.startsAt)} · {fmtTime(next.startsAt)}
               </Text>
-              
+
               <HStack spacing={3}>
                 <Button
                   size="sm"
-                  fontSize={{base: "10px", md: "14px"}}
+                  fontSize={{ base: "10px", md: "14px" }}
                   variant="primary"
                   onClick={() => navigate("/patient/appointments")}
                 >
@@ -106,7 +156,7 @@ const patientData = profile || {};
                   color="#dc2626"
                   borderRadius="full"
                   fontWeight={600}
-                  fontSize={{base: "10px", md: "14px"}}
+                  fontSize={{ base: "10px", md: "14px" }}
                   px={4}
                   onClick={handleCancel}
                   _hover={{ bg: "rgba(220, 38, 38, 0.06)" }}
@@ -116,7 +166,11 @@ const patientData = profile || {};
               </HStack>
             </>
           ) : (
-            <Text fontSize={{base: "12px", md: "14px"}} color="#5D4037" py={3}>
+            <Text
+              fontSize={{ base: "12px", md: "14px" }}
+              color="#5D4037"
+              py={3}
+            >
               Nothing scheduled.{" "}
               <Text
                 as="span"
@@ -132,14 +186,14 @@ const patientData = profile || {};
           )}
         </Box>
 
-        {/* Active Care Plan Card */}
-        <Box 
-          bg="beige" 
-          borderRadius="20px" 
-          p={6} 
+        {}
+        <Box
+          bg="beige"
+          borderRadius="20px"
+          p={6}
           boxShadow="0 2px 12px rgba(62, 39, 35, 0.06)"
-          display="flex" 
-          alignItems="center" 
+          display="flex"
+          alignItems="center"
           gap={5}
         >
           <Box position="relative" flexShrink={0}>
@@ -151,28 +205,52 @@ const patientData = profile || {};
               align="center"
               justify="center"
             >
-              <Text fontSize={{base: "18px", md: "24px"}} fontWeight={800} color="espresso">
+              <Text
+                fontSize={{ base: "18px", md: "24px" }}
+                fontWeight={800}
+                color="espresso"
+              >
                 {progress}%
               </Text>
-              <Text fontSize={{base: "8px", md: "12px"}} fontWeight={600} color="#5D4037">
+              <Text
+                fontSize={{ base: "8px", md: "12px" }}
+                fontWeight={600}
+                color="#5D4037"
+              >
                 Done
               </Text>
             </Flex>
           </Box>
 
           <Box>
-            <Text fontSize={{base: "8px", md: "11.5px"}} fontWeight={600} color="#5D4037" textTransform="uppercase" letterSpacing="0.08em">
+            <Text
+              fontSize={{ base: "8px", md: "11.5px" }}
+              fontWeight={600}
+              color="#5D4037"
+              textTransform="uppercase"
+              letterSpacing="0.08em"
+            >
               Active Care Plan
             </Text>
-            <Text fontSize={{base: "13px", md: "15px"}} fontWeight={700} color="espresso" mt={1} mb={1.5}>
+            <Text
+              fontSize={{ base: "13px", md: "15px" }}
+              fontWeight={700}
+              color="espresso"
+              mt={1}
+              mb={1.5}
+            >
               {activePlan ? activePlan.title : "No active plan"}
             </Text>
-            <Text fontSize={{base: "10px", md: "13px"}} color="#5D4037" mb={3}>
-              {activePlan 
-                ? `${doneTasks} of ${activePlan.tasks.length} tasks done` 
+            <Text
+              fontSize={{ base: "10px", md: "13px" }}
+              color="#5D4037"
+              mb={3}
+            >
+              {activePlan
+                ? `${doneTasks} of ${activePlan.tasks.length} tasks done`
                 : "Your clinician will assign one after a visit"}
             </Text>
-            
+
             {activePlan && (
               <Button
                 size="sm"
@@ -194,11 +272,26 @@ const patientData = profile || {};
         </Box>
       </Grid>
 
-      <Grid templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }} gap={4}>
+      <Grid
+        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
+        gap={4}
+      >
         {[
-          { label: "Appointments", value: `${appointments.length}`, sub: "All time" },
-          { label: "Completed", value: `${completed.length}`, sub: "Past visits" },
-          { label: "Clinicians", value: `${cliniciansSeen}`, sub: "Ongoing care" },
+          {
+            label: "Appointments",
+            value: `${appointments.length}`,
+            sub: "All time",
+          },
+          {
+            label: "Completed",
+            value: `${completed.length}`,
+            sub: "Past visits",
+          },
+          {
+            label: "Clinicians",
+            value: `${cliniciansSeen}`,
+            sub: "Ongoing care",
+          },
         ].map((s) => (
           <Box
             key={s.label}
@@ -208,13 +301,27 @@ const patientData = profile || {};
             boxShadow="0 2px 12px rgba(62, 39, 35, 0.06)"
             textAlign="center"
           >
-            <Text fontSize={{base: "24px", md: "44px"}} fontWeight={800} color="brand.500" lineHeight="1.1">
+            <Text
+              fontSize={{ base: "24px", md: "44px" }}
+              fontWeight={800}
+              color="brand.500"
+              lineHeight="1.1"
+            >
               {s.value}
             </Text>
-            <Text fontSize={{base: "12px", md: "16px"}} fontWeight={600} color="espresso" mt={1}>
+            <Text
+              fontSize={{ base: "12px", md: "16px" }}
+              fontWeight={600}
+              color="espresso"
+              mt={1}
+            >
               {s.label}
             </Text>
-            <Text fontSize={{base: "10px", md: "13px"}} color="#5D4037" mt={0.5}>
+            <Text
+              fontSize={{ base: "10px", md: "13px" }}
+              color="#5D4037"
+              mt={0.5}
+            >
               {s.sub}
             </Text>
           </Box>

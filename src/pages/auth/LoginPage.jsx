@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
-  Box, Button, Flex, FormControl, FormLabel, Heading, Input,
-  Text, VStack, Alert, AlertIcon,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Text,
+  VStack,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../features/api/careslotApi";
 import { setCredentials } from "../../features/auth/authSlice";
 import { ROLE_HOME } from "../../routes/roleHome";
-
-
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -22,10 +29,9 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       const result = await login({ email, password }).unwrap();
-      dispatch(setCredentials(result));         
+      dispatch(setCredentials(result));
       navigate(ROLE_HOME[result.role] || "/login");
-    } catch {
-    }
+    } catch {}
   };
 
   return (
@@ -40,28 +46,74 @@ export default function LoginPage() {
         position="relative"
         overflow="hidden"
       >
-        <Box position="absolute" w="420px" h="420px" borderRadius="full" bg="brand.500" opacity={0.15} top="-120px" left="-120px" />
-        <Box position="absolute" w="320px" h="320px" borderRadius="full" border="1px solid" borderColor="brand.500" opacity={0.35} bottom="-90px" right="-70px" />
+        <Box
+          position="absolute"
+          w="420px"
+          h="420px"
+          borderRadius="full"
+          bg="brand.500"
+          opacity={0.15}
+          top="-120px"
+          left="-120px"
+        />
+        <Box
+          position="absolute"
+          w="320px"
+          h="320px"
+          borderRadius="full"
+          border="1px solid"
+          borderColor="brand.500"
+          opacity={0.35}
+          bottom="-90px"
+          right="-70px"
+        />
 
         <Heading color="cream" fontSize="5xl" fontWeight="800" mb={4}>
           CareSlot
         </Heading>
         <Text color="taupe" fontSize="lg" maxW="400px" lineHeight="tall">
-          Calm, connected care. Book visits, follow your care plan,
-          and stay on track — all in one place.
+          Calm, connected care. Book visits, follow your care plan, and stay on
+          track — all in one place.
         </Text>
       </Box>
 
-      <Flex flex={1} align="center" justify="center" bg={{base:"espresso", md:"cream"}}  px={6}>
+      <Flex
+        flex={1}
+        align="center"
+        justify="center"
+        bg={{ base: "espresso", md: "cream" }}
+        px={6}
+      >
         <Box w="full" maxW="420px">
-          <VStack spacing={6} align="stretch" bg="cream"    boxShadow="lg" p={8} borderRadius="2xl">
+          <VStack
+            spacing={6}
+            align="stretch"
+            bg="cream"
+            boxShadow="lg"
+            p={8}
+            borderRadius="2xl"
+          >
             <Box>
-              <Heading size={{base: "md", md: "lg"}} color="espresso" mb={1}>Welcome back</Heading>
-              <Text color="espresso" fontSize={{ base: "xs", md: "md" }} opacity={0.6}>Sign in to continue to your portal.</Text>
+              <Heading size={{ base: "md", md: "lg" }} color="espresso" mb={1}>
+                Welcome back
+              </Heading>
+              <Text
+                color="espresso"
+                fontSize={{ base: "xs", md: "md" }}
+                opacity={0.6}
+              >
+                Sign in to continue to your portal.
+              </Text>
             </Box>
 
             {error && (
-              <Alert status="error"fontSize={{ base: "10px", md: "md" }} borderRadius="xl" bg="beige" color="espresso">
+              <Alert
+                status="error"
+                fontSize={{ base: "10px", md: "md" }}
+                borderRadius="xl"
+                bg="beige"
+                color="espresso"
+              >
                 <AlertIcon size={16} />
                 {error?.data?.message || "Unable to sign in. Please try again."}
               </Alert>
@@ -70,7 +122,13 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit}>
               <VStack spacing={4} align="stretch">
                 <FormControl isRequired>
-                  <FormLabel color="espresso" fontSize={{ base: "xs", md: "sm" }} mb={1}>Email</FormLabel>
+                  <FormLabel
+                    color="espresso"
+                    fontSize={{ base: "xs", md: "sm" }}
+                    mb={1}
+                  >
+                    Email
+                  </FormLabel>
                   <Input
                     type="email"
                     placeholder="you@example.com"
@@ -81,7 +139,13 @@ export default function LoginPage() {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel color="espresso" fontSize={{ base: "xs", md: "sm" }} mb={1}>Password</FormLabel>
+                  <FormLabel
+                    color="espresso"
+                    fontSize={{ base: "xs", md: "sm" }}
+                    mb={1}
+                  >
+                    Password
+                  </FormLabel>
                   <Input
                     type="password"
                     placeholder="••••••••"
@@ -105,9 +169,17 @@ export default function LoginPage() {
               </VStack>
             </form>
 
-            <Text fontSize={{ base: "xs", md: "sm" }} color="espresso" opacity={0.7} textAlign="center">
-              New to CareSlot ? {" "}
-              <RouterLink to="/register" style={{ color: "#A07855", fontWeight: 600 }}>
+            <Text
+              fontSize={{ base: "xs", md: "sm" }}
+              color="espresso"
+              opacity={0.7}
+              textAlign="center"
+            >
+              New to CareSlot ?{" "}
+              <RouterLink
+                to="/register"
+                style={{ color: "#A07855", fontWeight: 600 }}
+              >
                 Create an account
               </RouterLink>
             </Text>

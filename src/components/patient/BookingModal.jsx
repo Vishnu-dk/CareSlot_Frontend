@@ -1,10 +1,17 @@
 import { useState } from "react";
 import {
-  Box, Button, Flex, Input, Modal, ModalBody, ModalContent,
-  ModalOverlay, Text, VStack,
+  Box,
+  Button,
+  Flex,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import { fmtDate, fmtTime } from "../../utils/dates";
-
 
 export default function BookingModal({
   isOpen,
@@ -19,7 +26,6 @@ export default function BookingModal({
   const [reason, setReason] = useState("General consultation");
   const [confirmed, setConfirmed] = useState(false);
 
-
   useState(() => {
     if (!isOpen) {
       setReason("General consultation");
@@ -30,8 +36,7 @@ export default function BookingModal({
   const handleConfirmClick = async () => {
     try {
       await onConfirm({ reason });
-      setConfirmed(true); 
-      
+      setConfirmed(true);
 
       setTimeout(() => {
         onClose();
@@ -39,7 +44,6 @@ export default function BookingModal({
         setReason("General consultation");
       }, 1500);
     } catch (e) {
-
       console.error(e);
     }
   };
@@ -56,7 +60,7 @@ export default function BookingModal({
       blockScrollOnMount={true}
     >
       <ModalOverlay bg="rgba(62,39,35,0.42)" backdropFilter="blur(5px)" />
-      
+
       <ModalContent
         bg="cream"
         borderRadius="24px"
@@ -64,12 +68,17 @@ export default function BookingModal({
         boxShadow="0 28px 80px rgba(62,39,35,0.22)"
       >
         <ModalBody p={8}>
-
           {confirmed ? (
             <VStack spacing={2} textAlign="center" py={4}>
               <Flex
-                w="60px" h="60px" borderRadius="full" bg="rgba(34,197,94,0.15)"
-                align="center" justify="center" fontSize="26px" color="#15803d"
+                w="60px"
+                h="60px"
+                borderRadius="full"
+                bg="rgba(34,197,94,0.15)"
+                align="center"
+                justify="center"
+                fontSize="26px"
+                color="#15803d"
               >
                 ✓
               </Flex>
@@ -81,7 +90,6 @@ export default function BookingModal({
               </Text>
             </VStack>
           ) : (
-
             <>
               <Text fontSize="20px" fontWeight={700} color="espresso" mb={1}>
                 Confirm Booking
@@ -90,13 +98,19 @@ export default function BookingModal({
                 Review your appointment details below
               </Text>
 
-
               <Box bg="beige" borderRadius="16px" p={5} mb={4}>
-                <Text fontWeight={700} fontSize="15px" color="espresso" mb={0.5}>
+                <Text
+                  fontWeight={700}
+                  fontSize="15px"
+                  color="espresso"
+                  mb={0.5}
+                >
                   Dr. {clinician.firstName} {clinician.lastName}
                 </Text>
-                <Text fontSize="13px" color="#5D4037">{clinician.specialty}</Text>
-                
+                <Text fontSize="13px" color="#5D4037">
+                  {clinician.specialty}
+                </Text>
+
                 <Box mt={3} pt={3} borderTop="1px solid" borderColor="taupe">
                   <Text fontWeight={600} fontSize="14px" color="espresso">
                     {fmtDate(date)} · {fmtTime(slot.startTime)}
@@ -108,7 +122,14 @@ export default function BookingModal({
               </Box>
 
               <Box mb={4}>
-                <Text as="label" display="block" fontSize="13px" fontWeight={700} color="espresso" mb={2}>
+                <Text
+                  as="label"
+                  display="block"
+                  fontSize="13px"
+                  fontWeight={700}
+                  color="espresso"
+                  mb={2}
+                >
                   Reason for Appointment
                 </Text>
                 <Input
@@ -120,17 +141,21 @@ export default function BookingModal({
                   color="espresso"
                   fontSize="14px"
                   borderRadius="md"
-                  _focus={{ borderColor: "brand.600", boxShadow: "0 0 0 1px #A07855" }}
+                  _focus={{
+                    borderColor: "brand.600",
+                    boxShadow: "0 0 0 1px #A07855",
+                  }}
                   isDisabled={isBooking}
                 />
               </Box>
 
               {error && (
                 <Text color="#dc2626" fontSize="13px" fontWeight={600} mb={3}>
-                  {typeof error === 'string' ? error : error?.data?.message || "Booking failed"}
+                  {typeof error === "string"
+                    ? error
+                    : error?.data?.message || "Booking failed"}
                 </Text>
               )}
-
 
               <Flex gap={3}>
                 <Button

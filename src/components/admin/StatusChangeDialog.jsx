@@ -1,10 +1,16 @@
 import { useRef } from "react";
 import {
-  AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader,
-  AlertDialogContent, AlertDialogOverlay, Button, Flex, Text,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
 import { CheckCircle, XCircle } from "lucide-react";
-
 
 export default function StatusChangeDialog({
   isOpen,
@@ -17,11 +23,13 @@ export default function StatusChangeDialog({
   const cancelRef = useRef();
 
   const isDeactivate = actionType === "DEACTIVATE";
-  
+
   const iconColor = isDeactivate ? "#dc2626" : "#15803d";
-  const bgColor = isDeactivate ? "rgba(220, 38, 38, 0.1)" : "rgba(21, 128, 61, 0.1)";
+  const bgColor = isDeactivate
+    ? "rgba(220, 38, 38, 0.1)"
+    : "rgba(21, 128, 61, 0.1)";
   const title = isDeactivate ? "Confirm Deactivation" : "Confirm Activation";
-  const message = isDeactivate 
+  const message = isDeactivate
     ? `Are you sure you want to deactivate ${userName}? They will lose access immediately.`
     : `Are you sure you want to reactivate ${userName}? They will regain access.`;
   const buttonText = isDeactivate ? "Yes, Deactivate" : "Yes, Activate";
@@ -44,9 +52,18 @@ export default function StatusChangeDialog({
           boxShadow="0 28px 80px rgba(62,39,35,0.22)"
           maxW="400px"
         >
-          <AlertDialogHeader fontSize="lg" fontWeight="bold" color="espresso" pb={4}>
+          <AlertDialogHeader
+            fontSize="lg"
+            fontWeight="bold"
+            color="espresso"
+            pb={4}
+          >
             <Flex align="center" gap={2}>
-              {isDeactivate ? <XCircle size={20} color={iconColor} /> : <CheckCircle size={20} color={iconColor} />}
+              {isDeactivate ? (
+                <XCircle size={20} color={iconColor} />
+              ) : (
+                <CheckCircle size={20} color={iconColor} />
+              )}
               {title}
             </Flex>
           </AlertDialogHeader>
@@ -56,8 +73,8 @@ export default function StatusChangeDialog({
           </AlertDialogBody>
 
           <AlertDialogFooter pt={6}>
-            <Button 
-              ref={cancelRef} 
+            <Button
+              ref={cancelRef}
               onClick={onClose}
               bg="transparent"
               border="1.5px solid"
@@ -69,7 +86,7 @@ export default function StatusChangeDialog({
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={onConfirm}
               isLoading={isLoading}
               loadingText="Processing..."

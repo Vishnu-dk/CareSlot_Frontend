@@ -1,6 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectIsAuthenticated, selectCurrentUserRole } from "../features/auth/authSlice";
+import {
+  selectIsAuthenticated,
+  selectCurrentUserRole,
+} from "../features/auth/authSlice";
 import { ROLE_HOME } from "./roleHome";
 
 export default function PublicOnlyRoute() {

@@ -12,8 +12,12 @@ export default function Placeholder({ name }) {
       border="1px dashed"
       borderColor="taupe"
     >
-      <Text fontSize="2xl" fontWeight="bold" color="espresso">{name}</Text>
-      <Text mt={2} color="espresso" opacity={0.6}>Coming in the next step</Text>
+      <Text fontSize="2xl" fontWeight="bold" color="espresso">
+        {name}
+      </Text>
+      <Text mt={2} color="espresso" opacity={0.6}>
+        Coming in the next step
+      </Text>
     </Flex>
   );
 }

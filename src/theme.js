@@ -9,19 +9,19 @@ const theme = extendTheme({
   },
 
   colors: {
-    cream: "#FCF9F2",     // App background
-    beige: "#F3EDE0",     // Cards / surfaces
-    taupe: "#D7CCC8",     // Borders / dividers
-    espresso: "#3E2723",  // Text / headings
-    // Brand scale built around #A07855 (needed for Chakra colorSchemes)
+    cream: "#FCF9F2",
+    beige: "#F3EDE0",
+    taupe: "#D7CCC8",
+    espresso: "#3E2723",
+
     brand: {
       50: "#FAF6F1",
       100: "#F3EDE0",
       200: "#E5D5C3",
       300: "#D3B99D",
       400: "#B99672",
-      500: "#A07855",  // Primary
-      600: "#8A6546",  // Hover
+      500: "#A07855",
+      600: "#8A6546",
       700: "#6F5238",
       800: "#55402B",
       900: "#3E2723",
@@ -58,7 +58,10 @@ const theme = extendTheme({
             bg: "cream",
             borderColor: "taupe",
             _hover: { borderColor: "brand.300" },
-            _focus: { borderColor: "brand.500", boxShadow: "0 0 0 1px #A07855" },
+            _focus: {
+              borderColor: "brand.500",
+              boxShadow: "0 0 0 1px #A07855",
+            },
           },
         },
       },

@@ -41,13 +41,12 @@ export default function FloatingRail() {
         borderRadius="28px"
         px={2.5}
         py={4}
-        w={expanded ? "220px" : "76px"}  
+        w={expanded ? "220px" : "76px"}
         transition="all 0.25s ease"
         overflow="hidden"
         boxShadow="0 2px 12px rgba(62, 39, 35, 0.06), 0 8px 28px rgba(62, 39, 35, 0.08)"
       >
         {items.map(({ label, path, icon: Icon, end, isLogout }) => {
-          
           const renderRowContent = (isActive = false) => (
             <>
               <Flex
@@ -61,7 +60,9 @@ export default function FloatingRail() {
                 bg={isActive ? "brand.500" : "transparent"}
                 color={isActive ? "white" : "espresso"}
                 opacity={isActive ? 1 : 0.6}
-                boxShadow={isActive ? "0 0 0 4px rgba(160, 120, 85, 0.18)" : "none"}
+                boxShadow={
+                  isActive ? "0 0 0 4px rgba(160, 120, 85, 0.18)" : "none"
+                }
               >
                 <Icon size={20} />
               </Flex>
@@ -83,7 +84,7 @@ export default function FloatingRail() {
             return (
               <Box key={path} w="full">
                 <Box h="1px" bg="taupe" mx={2} my={1.5} />
-                
+
                 <Flex
                   as="button"
                   onClick={handleLogout}
@@ -113,7 +114,9 @@ export default function FloatingRail() {
                   borderRadius="full"
                   transition="background 0.15s ease"
                   bg={isActive ? "rgba(160, 120, 85, 0.14)" : "transparent"}
-                  _hover={{ bg: isActive ? "rgba(160, 120, 85, 0.14)" : "beige" }}
+                  _hover={{
+                    bg: isActive ? "rgba(160, 120, 85, 0.14)" : "beige",
+                  }}
                 >
                   {renderRowContent(isActive)}
                 </Flex>
