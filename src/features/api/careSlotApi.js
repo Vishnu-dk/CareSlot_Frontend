@@ -114,6 +114,27 @@ export const careSlotApi = createApi({
       query: () => "/clinicians/my-patients", 
       providesTags: ["Patient"] 
     }),
+
+    getAllClinicians: builder.query({
+      query: () => "/clinicians", 
+      providesTags: ["Clinician"],
+    }),
+    getAllPatients: builder.query({
+      query: () => "/patients",
+      providesTags: ["Patient"],
+    }),
+    getAllAppointments: builder.query({
+      query: () => "/appointments/all",
+      providesTags: ["Appointment"],
+    }),
+    deactivateUser: builder.mutation({
+      query: (userId) => ({ url: `/admin/users/${userId}/deactivate`, method: "PATCH" }),
+      invalidatesTags: ["Clinician", "Patient"],
+    }),
+    activateUser: builder.mutation({
+      query: (userId) => ({ url: `/admin/users/${userId}/activate`, method: "PATCH" }),
+      invalidatesTags: ["Clinician", "Patient","Appointment"],
+    }),
   }),
 });
 
@@ -137,4 +158,9 @@ export const {
   useDeleteAvailabilityMutation,
   useGetMyPatientsQuery,
   useGetMyWeeklyAvailabilityQuery,
+  useGetAllCliniciansQuery,
+  useGetAllPatientsQuery,
+  useGetAllAppointmentsQuery,
+  useDeactivateUserMutation,
+  useActivateUserMutation,
 } = careSlotApi;

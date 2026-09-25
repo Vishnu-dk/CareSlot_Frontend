@@ -12,6 +12,8 @@ import CarePlansPage from "./pages/patient/CarePlanPage";
 import ClinicianDashboard from "./pages/clinician/DashboardPage";
 import AvailabilityPage from "./pages/clinician/AvailabiltyPage";
 import PatientsPage from "./pages/clinician/PatientsPage";
+import AdminDashboard from "./pages/admin/DashboardPage";
+import UsersPage from "./pages/admin/UserPage";
 
 
 export default function App() {
@@ -48,9 +50,8 @@ export default function App() {
       {/* ADMIN portal */}
       <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/admin" element={<AppLayout />}>
-          <Route index element={<Placeholder name="System Overview" />} />
-          <Route path="clinicians" element={<Placeholder name="All Clinicians" />} />
-          <Route path="patients" element={<Placeholder name="All Patients" />} />
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<UsersPage />} />
         </Route>
       </Route>
 

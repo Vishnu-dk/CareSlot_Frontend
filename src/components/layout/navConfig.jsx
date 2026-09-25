@@ -26,8 +26,7 @@ export const NAV_ITEMS = {
   ],
   ADMIN: [
     { label: "Overview",   path: "/admin",            icon: BarChart3, end: true },
-    { label: "Clinicians", path: "/admin/clinicians", icon: Stethoscope },
-    { label: "Patients",   path: "/admin/patients",   icon: Users },
+    { label: "Users",      path: "/admin/users",      icon: Users },
     { label: "Logout",     path: "/login",            icon: LogOut,        isLogout: true },
   ],
 };
