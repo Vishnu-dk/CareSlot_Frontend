@@ -8,7 +8,7 @@ import {
 } from "../../features/api/careSlotApi";
 import Toast, { useToastMsg } from "../../components/common/Toast";
 import BookingModal from "../../components/patient/BookingModal"; 
-import { DAY_NAMES, nextDatesForWeekday, fmtDate, fmtTime } from "../../utils/dates";
+import { DAY_NAMES, nextDatesForWeekday, fmtDate, fmtTime, combineToISOWithOffset } from "../../utils/dates";
 
 const CARD_SHADOW = "0 2px 12px rgba(62, 39, 35, 0.06)";
 const initialsOf = (c) => `${c.firstName?.[0] || ""}${c.lastName?.[0] || ""}`.toUpperCase();
@@ -45,11 +45,13 @@ export default function BookVisitPage() {
   const handleConfirmBooking = async ({ reason }) => {
     setModalError(null);
     try {
+      const startIso = combineToISOWithOffset(selectedDate, bookingSlot.startTime);
+      const endIso = combineToISOWithOffset(selectedDate, bookingSlot.endTime);
       await book({
         clinicianId: selected.userId,
         date: selectedDate,
-        startTime: bookingSlot.startTime,
-        endTime: bookingSlot.endTime,
+        startTime: startIso,
+        endTime: endIso,
         reason,
       }).unwrap();
       

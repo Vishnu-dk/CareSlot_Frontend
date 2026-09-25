@@ -14,6 +14,7 @@ import AvailabilityPage from "./pages/clinician/AvailabiltyPage";
 import PatientsPage from "./pages/clinician/PatientsPage";
 import AdminDashboard from "./pages/admin/DashboardPage";
 import UsersPage from "./pages/admin/UserPage";
+import CarePlansListPage from "./pages/patient/CarePlansListPage";
 
 
 export default function App() {
@@ -33,7 +34,7 @@ export default function App() {
           <Route path="/patient" element={<PatientDashboard />} />
           <Route path="/patient/book" element={<BookVisitPage />} />
           <Route path="/patient/appointments" element={<AppointmentsPage />} />
-          <Route path="/patient/care-plans" element={<CarePlansPage />} />
+          <Route path="/patient/care-plans" element={<CarePlansListPage />} />
         </Route>
       </Route>
 
@@ -43,7 +44,6 @@ export default function App() {
     <Route index element={<ClinicianDashboard />} />
     <Route path="availability" element={<AvailabilityPage />} />
     <Route path="patients" element={<PatientsPage />} />
-          <Route path="care-plans" element={<Placeholder name="Care Plans Issued" />} />
         </Route>
       </Route>
 

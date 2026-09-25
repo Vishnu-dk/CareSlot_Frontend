@@ -29,7 +29,6 @@ const { data: profile, isLoading ,error} = useGetMyProfileQuery();
 
 const patientData = profile || {}; 
 
-console.log("Status check:", { isLoading, error, data: profile, patientData });
 
   const upcoming = appointments.filter((a) => a.status === "BOOKED");
   const completed = appointments.filter((a) => a.status === "COMPLETED");

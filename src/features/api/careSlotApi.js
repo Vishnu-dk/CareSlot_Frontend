@@ -57,12 +57,12 @@ export const careSlotApi = createApi({
 
 
     getMyCarePlans: builder.query({
-      query: () => "/care-plans/my-plans",
+      query: () => "/care-plan/my-plans",
       providesTags: ["CarePlan"],
     }),
     updateTaskStatus: builder.mutation({
       query: ({ taskId, status }) => ({
-        url: `/care-plans/tasks/${taskId}/status?status=${status}`,
+        url: `/care-plan/tasks/${taskId}/status?status=${status}`,
         method: "PATCH",
       }),
       invalidatesTags: ["CarePlan"],
@@ -71,17 +71,19 @@ export const careSlotApi = createApi({
     getMyProfile: builder.query({
       
       query: () => {
-        console.log("Fetching profile...");
         return "/patients/my-profile";
       },
       providesTags: ["Patient"],
     }),
+    getMyPatientsPlans: builder.query({
+  query: () => "/care-plan/my-issued-plans",
+  providesTags: ["CarePlan"],
+}),
 
 
 
     getMySchedule: builder.query({ 
       query: ({ date }) => {
-        console.log("Fetching profile...");
         return `/appointments/my-schedule?date=${date}`;
       },
       providesTags: ["Appointment"] 
@@ -90,10 +92,17 @@ export const careSlotApi = createApi({
       query: (id) => ({ url: `/appointments/${id}/complete`, method: "PATCH" }), 
       invalidatesTags: ["Appointment"] 
     }),
-    createCarePlan: builder.mutation({ 
-      query: (body) => ({ url: "/care-plans", method: "POST" }), 
-      invalidatesTags: ["CarePlan"] 
-    }),
+createCarePlan: builder.mutation({
+  query: (payload) => ({
+    url: "/care-plan",
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json"
+    },
+    body: payload, 
+  }),
+  invalidatesTags: ["CarePlan"],
+}),
     getMyWeeklyAvailability: builder.query({
       query: () => `/clinicians/weekly-availability/me`,
       providesTags: ["Availability"],
@@ -163,4 +172,5 @@ export const {
   useGetAllAppointmentsQuery,
   useDeactivateUserMutation,
   useActivateUserMutation,
+  useGetMyPatientsPlansQuery,
 } = careSlotApi;

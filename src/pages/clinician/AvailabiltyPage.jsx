@@ -49,7 +49,7 @@ export default function AvailabilityPage() {
       }
       onClose();
     } catch (e) {
-      console.error(e);
+  
     }
   };
 
@@ -59,7 +59,7 @@ export default function AvailabilityPage() {
       await deleteAvail(dayOfWeek).unwrap();
       onClose();
     } catch (e) {
-      console.error(e);
+   
     }
   };
 
