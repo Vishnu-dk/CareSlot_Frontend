@@ -69,7 +69,7 @@ export default function PatientsPage() {
             <Table variant="simple" size="md">
               <Thead>
                 <Tr>
-                  {["Patient", "Age", "Last Visit", "Care Plan", "Status"].map(
+                  {["Patient", "Age", "Last Visit", "Status"].map(
                     (col) => (
                       <Th
                         key={col}
@@ -141,14 +141,7 @@ export default function PatientsPage() {
                     >
                       {p.lastVisit ? fmtDate(p.lastVisit) : "—"}
                     </Td>
-                    <Td
-                      py={4}
-                      px={5}
-                      fontSize={{ base: "11px", md: "13.5px" }}
-                      color="#5D4037"
-                    >
-                      {p.activePlanTitle || "—"}
-                    </Td>
+
                     <Td py={4} px={5}>
                       <Box
                         as="span"

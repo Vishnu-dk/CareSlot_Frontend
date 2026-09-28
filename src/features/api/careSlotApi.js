@@ -22,6 +22,38 @@ export const careSlotApi = createApi({
       query: (body) => ({ url: "/auth/register", method: "POST", body }),
     }),
 
+    // --- PROFILE ENDPOINTS ---
+
+    // Patient Profile
+    getMyProfile: builder.query({
+      query: () => "/patients/my-profile",
+      providesTags: ["Patient"],
+    }),
+    updatePatientProfile: builder.mutation({
+      query: (body) => ({ 
+        url: "/patients/profile", 
+        method: "POST", // Matches your backend @PostMapping
+        body 
+      }),
+      invalidatesTags: ["Patient"],
+    }),
+
+    // Clinician Profile
+    getClinicianMyProfile: builder.query({
+      query: () => "/clinicians/my-profile",
+      providesTags: ["Clinician"],
+    }),
+    updateClinicianProfile: builder.mutation({
+      query: (body) => ({ 
+        url: "/clinicians/profile", 
+        method: "POST", // Matches your backend @PostMapping
+        body 
+      }),
+      invalidatesTags: ["Clinician"],
+    }),
+
+    // --- EXISTING ENDPOINTS ---
+
     getClinicians: builder.query({
       query: () => "/clinicians",
       providesTags: ["Clinician"],
@@ -66,12 +98,6 @@ export const careSlotApi = createApi({
       invalidatesTags: ["CarePlan"],
     }),
 
-    getMyProfile: builder.query({
-      query: () => {
-        return "/patients/my-profile";
-      },
-      providesTags: ["Patient"],
-    }),
     getMyPatientsPlans: builder.query({
       query: () => "/care-plan/my-issued-plans",
       providesTags: ["CarePlan"],
@@ -170,7 +196,13 @@ export const {
   useCancelAppointmentMutation,
   useGetMyCarePlansQuery,
   useUpdateTaskStatusMutation,
+  
+  // Profile Hooks
   useGetMyProfileQuery,
+  useUpdatePatientProfileMutation,
+  useGetClinicianMyProfileQuery,
+  useUpdateClinicianProfileMutation,
+
   useGetMyScheduleQuery,
   useCompleteAppointmentMutation,
   useCreateCarePlanMutation,

@@ -67,8 +67,8 @@ export default function ClinicianDashboard() {
     const now = new Date();
     const start = parseISO(appointment.startsAt);
     const end = parseISO(appointment.endsAt);
-    const earliest = subMinutes(start, 1);
-    const latest = addMinutes(end, 2);
+    const earliest = subMinutes(start, 5);
+    const latest = addMinutes(end, 5);
     return isWithinInterval(now, { start: earliest, end: latest });
   };
 
@@ -194,7 +194,7 @@ export default function ClinicianDashboard() {
               const patientHasPlan = hasPlanForPatient(appointment.patientId);
               const canCreatePlan = isPlanWindowOpen(appointment) && !isDone;
 
-              const canComplete = patientHasPlan || isDone;
+            const canComplete = !isDone && patientHasPlan && isPlanWindowOpen(appointment);
 
               return (
                 <Flex

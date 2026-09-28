@@ -15,29 +15,42 @@ import PatientsPage from "./pages/clinician/PatientsPage";
 import AdminDashboard from "./pages/admin/DashboardPage";
 import UsersPage from "./pages/admin/UserPage";
 import CarePlansListPage from "./pages/patient/CarePlansListPage";
+import ProfileSetup from "./pages/auth/ProfileSetup";
+
+// ... other imports remain the same
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {}
+      {/* Public Routes */}
       <Route element={<PublicOnlyRoute />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Route>
 
-      {}
+      {/* Profile Setup - Accessible to authenticated users with incomplete profiles */}
+      <Route 
+        path="/profile-setup" 
+        element={
+          <ProtectedRoute allowedRoles={["PATIENT", "CLINICIAN"]}>
+            <ProfileSetup />
+          </ProtectedRoute>
+        } 
+      />
+
+      {/* Patient Routes */}
       <Route element={<ProtectedRoute allowedRoles={["PATIENT"]} />}>
         <Route path="/patient" element={<AppLayout />}>
-          <Route path="/patient" element={<PatientDashboard />} />
-          <Route path="/patient/book" element={<BookVisitPage />} />
-          <Route path="/patient/appointments" element={<AppointmentsPage />} />
-          <Route path="/patient/care-plans" element={<CarePlansListPage />} />
+          <Route index element={<PatientDashboard />} />
+          <Route path="book" element={<BookVisitPage />} />
+          <Route path="appointments" element={<AppointmentsPage />} />
+          <Route path="care-plans" element={<CarePlansListPage />} />
         </Route>
       </Route>
 
-      {}
+      {/* Clinician Routes */}
       <Route element={<ProtectedRoute allowedRoles={["CLINICIAN"]} />}>
         <Route path="/clinician" element={<AppLayout />}>
           <Route index element={<ClinicianDashboard />} />
@@ -46,7 +59,7 @@ export default function App() {
         </Route>
       </Route>
 
-      {}
+      {/* Admin Routes */}
       <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/admin" element={<AppLayout />}>
           <Route index element={<AdminDashboard />} />
